@@ -1,0 +1,5 @@
+existingSecret: mariadb-galera-new
+persistence.existingClaim: mariadb-galera-new-pvc
+podAntiAffinityPreset: hard
+podSecurityContext:
+  enabled: false

@@ -6,11 +6,15 @@
 
 ## Using just basic config
 
-    $ helm install mariadb-galera-new --namespace=mariadb-galera-new --values values.yaml bitnami/mariadb-galera
+    $ helm install mariadb-galera-new \
+        --namespace=mariadb-galera-new \
+        --values values.yaml bitnami/mariadb-galera
 
 ## Using fully config
 
-    $ helm install mariadb-galera-new --namespace=mariadb-galera-new -f fullConfig.yaml bitnami/mariadb-galera
+    $ helm install mariadb-galera-new \
+        --namespace=mariadb-galera-new \
+        -f fullConfig.yaml bitnami/mariadb-galera
 
 ## Connect from the cluster
 
@@ -25,3 +29,10 @@ To connect to your database from outside the cluster execute the following comma
 
     kubectl port-forward --namespace mariadb-galera-new svc/mariadb-galera-new 3306:3306 &
     mysql -h 127.0.0.1 -P 3306 -uroot -p$(kubectl get secret --namespace mariadb-galera-new mariadb-galera-new -o jsonpath="{.data.mariadb-root-password}" | base64 -d) my_database
+
+
+    kubectl run db-mariadb-galera-client --rm --tty -i \
+    --restart='Never' --namespace default \
+    --image docker.io/bitnami/mariadb-galera:10.6.7-debian-10-r56 \
+    --command \
+    -- mysql -h mariadb-galera-new.mariadb-galera-new.svc.cluster.local -uroot -pforch8127 my_database

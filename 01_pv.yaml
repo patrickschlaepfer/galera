@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mariadb-galera-new-pv
+  namespace: mariadb-galera-new
+spec:
+  storageClassName: manual
+#  mountOptions:
+#    - dir_mode=0777
+#    - file_mode=0777
+  capacity:
+    storage: 40Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: "/bitnami/mariadb-galera-new/"
