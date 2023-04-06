@@ -48,6 +48,10 @@ kubectl run db-mariadb-galera-client --rm --tty -i \
 
 ## Connect from outside
 
+Install the mysql client package
+
+    $ sudo apt install mysql-client
+
 To connect to your database from outside the cluster execute the following commands:
 
     kubectl port-forward --namespace mariadb-galera-new svc/mariadb-galera-new 3306:3306 &

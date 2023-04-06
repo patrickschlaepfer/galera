@@ -1,0 +1,18 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    openshift.io/host.generated: "true"
+  labels:
+    app: mariadb-galera
+  name: mariadb-galera-mysql
+  namespace: mariadb-galera-new
+spec:
+  host: mysql.apps.ocp1.internal.schlaepfer.com
+  port:
+    targetPort: 3306
+  to:
+    kind: Service
+    name: mariadb-galera-mysql
+    weight: 100
+  wildcardPolicy: None
