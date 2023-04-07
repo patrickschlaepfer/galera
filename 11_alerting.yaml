@@ -1,0 +1,11 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: mariadb-status
+  namespace: mariadb-galera-new
+spec:
+  groups:
+  - name: access_alert
+    rules:
+    - alert: MariaDBStatus
+      expr: mysql_up{job="mariadb-galera-new-metrics"} != 1
