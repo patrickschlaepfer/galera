@@ -97,9 +97,15 @@ Check for the port
 
 ### Alerting
 
-
+    $ oc get routes -n openshift-user-workload-monitoring
 
 ## adminer SQL 
+
+### Links
+
+* https://artifacthub.io/packages/helm/truecharts/adminer
+
+### Installation
 
 Add the repo
 
@@ -113,3 +119,9 @@ Install the chart
 Add a route
 
     $ oc create route edge --service=adminer
+
+## Benchmarking/Load Test
+
+* https://bobcares.com/blog/sysbench-mysql/
+* https://medium.com/@kestinator/test-the-performance-and-impact-of-mariadb-configuration-changes-b6f786173852
+* https://www.hammerdb.com/
