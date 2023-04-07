@@ -16,6 +16,8 @@ What does this do?
 
 * https://exploit.cz/helm-bitnami-mariadb-galera-hostpath-local-disk/amp/
 * https://github.com/liqotech/liqo/blob/master/examples/stateful-applications/manifests/values.yaml
+* https://docs.openshift.com/container-platform/4.10/monitoring/enabling-monitoring-for-user-defined-projects.html
+* https://quarkus.io/blog/micrometer-prometheus-openshift/
 
 
 ## Add Helm repo
@@ -80,7 +82,7 @@ To connect to your database from outside the cluster have a look at `04_service.
 
 * https://docs.openshift.com/container-platform/4.10/monitoring/enabling-monitoring-for-user-defined-projects.html
 
-### 
+### Setup metrics
 
 If you set the value `metrics.enabled: true` then there will be a new service
 called `mariadb-galera-new-metrics` created.
@@ -96,18 +98,15 @@ Check for the port
 
 ## adminer SQL 
 
-    $ helm repo add cetic https://cetic.github.io/helm-charts
+Add the repo
+
+    $ helm repo add truecharts https://charts.truecharts.org/
     $ helm repo update
 
+Install the chart
 
-    $ helm upgrade --install adminer cetic/adminer -f adminer-values.yaml
+    $ helm install adminer truecharts/adminer --version 3.0.15 --namespace=adminer
 
-    $ helm upgrade --install adminer \
-        --namespace=adminer \
-        -f fadminer-values.yaml cetic/adminer
+Add a route
 
     $ oc create route edge --service=adminer
-
-###
-
-helm install adminer truecharts/adminer --version 3.0.15 --namespace=adminer
