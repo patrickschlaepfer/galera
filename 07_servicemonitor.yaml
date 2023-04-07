@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: mariadb-galera-new-monitor
+  namespace: mariadb-galera-new
+  labels:
+    k8s-app: mariadb-galera-new-monitor
+spec:
+  endpoints:
+    - interval: 30s
+      path: /metrics
+      port: metrics
+      scheme: http
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mariadb-galera
+
+  

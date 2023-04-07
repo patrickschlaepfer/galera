@@ -1,0 +1,24 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: mariadb-galera-new-metrics
+  namespace: mariadb-galera-new
+  labels:
+    app.kubernetes.io/instance: mariadb-galera-new
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: mariadb-galera
+    helm.sh/chart: mariadb-galera-7.5.4
+  annotations:
+    openshift.io/host.generated: 'true'
+spec:
+  host: >-
+    mariadb-galera-new-metrics-mariadb-galera-new.apps.ocp1.internal.schlaepfer.com
+  to:
+    kind: Service
+    name: mariadb-galera-new-metrics
+    weight: 100
+  port:
+    targetPort: metrics
+  tls:
+    termination: edge
+  wildcardPolicy: None

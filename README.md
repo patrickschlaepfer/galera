@@ -29,6 +29,16 @@ if you haven't add the bitnami helm repo, add it
         --namespace=mariadb-galera-new \
         -f fullConfig.yaml bitnami/mariadb-galera
 
+## Update config
+
+If changing values you can update them by using the following command
+
+```
+helm upgrade -f values.yaml mariadb-galera-new \
+  bitnami/mariadb-galera \
+  --reuse-values 
+```
+
 ## Connect from the cluster
 
 To connect to your database run the following command:
@@ -52,25 +62,25 @@ Install the mysql client package
 
     $ sudo apt install mysql-client
 
-To connect to your database from outside the cluster execute the following commands:
+To connect to your database from outside the cluster have a look at `04_service.yaml` and
+`05_route.yaml`
 
-    kubectl port-forward --namespace mariadb-galera-new svc/mariadb-galera-new 3306:3306 &
-    mysql -h 127.0.0.1 -P 3306 -uroot \
-      -p$(kubectl get secret --namespace mariadb-galera-new mariadb-galera-new -o jsonpath="{.data.mariadb-root-password}" | base64 -d) \
-      my_database
+## Export metrics
 
-```
-kind: Service
-apiVersion: v1
-metadata:
-  name: galera
-spec:
-  type: NodePort
-  ports:
-    - port: 3306
-      targetPort: 3306
-      nodePort: 30001
-  selector:
-    app.kubernetes.io/instance: mariadb-galera-new
-    app.kubernetes.io/name: mariadb-galera
-```
+### Enable external monitoring
+
+* https://docs.openshift.com/container-platform/4.10/monitoring/enabling-monitoring-for-user-defined-projects.html
+
+### 
+
+If you set the value `metrics.enabled: true` then there will be a new service
+called `mariadb-galera-new-metrics` created.
+
+Apply `06_metric_route.yaml` and the metrics will be available by 
+
+    $ curl https://mariadb-galera-new-metrics-mariadb-galera-new.apps.ocp1.internal.schlaepfer.com/metrics -k
+
+Check for the port
+
+    $ oc describe service/mariadb-galera-new-metrics
+
