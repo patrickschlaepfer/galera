@@ -5,6 +5,13 @@ It is available on Linux only, and only supports the InnoDB storage engine
 (although there is experimental support for MyISAM and, from MariaDB 10.6, Aria. 
 See the wsrep_replicate_myisam system variable, or, from MariaDB 10.6, the wsrep_mode system variable).
 
+What does this do?
+
+* Setups a mariadb-galera cluster
+* Make the cluster available from outside
+* Adds prometheus endpoint
+* Adds adminer gui for basic admin
+
 ## Links
 
 * https://exploit.cz/helm-bitnami-mariadb-galera-hostpath-local-disk/amp/
@@ -65,6 +72,8 @@ Install the mysql client package
 To connect to your database from outside the cluster have a look at `04_service.yaml` and
 `05_route.yaml`
 
+    $ mysql -h mysql.apps.ocp1.internal.schlaepfer.com -P 30036 -uroot -pforch8127 my_database
+
 ## Export metrics
 
 ### Enable external monitoring
@@ -84,3 +93,21 @@ Check for the port
 
     $ oc describe service/mariadb-galera-new-metrics
 
+
+## adminer SQL 
+
+    $ helm repo add cetic https://cetic.github.io/helm-charts
+    $ helm repo update
+
+
+    $ helm upgrade --install adminer cetic/adminer -f adminer-values.yaml
+
+    $ helm upgrade --install adminer \
+        --namespace=adminer \
+        -f fadminer-values.yaml cetic/adminer
+
+    $ oc create route edge --service=adminer
+
+###
+
+helm install adminer truecharts/adminer --version 3.0.15 --namespace=adminer
